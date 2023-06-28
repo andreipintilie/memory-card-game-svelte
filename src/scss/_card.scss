@@ -1,0 +1,55 @@
+@use "./mixins" as *;
+
+.card {
+  display: block;
+  cursor: pointer;
+  user-select: none;
+  border-radius: 20px;
+  font-size: 28px;
+  background-color: #323232;
+
+  @include bp(t) {
+    font-size: 54px;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  &.active {
+    .card-inner {
+      transform: rotateY(180deg);
+    }
+  }
+
+  &-inner {
+    position: relative;
+    transition: transform 0.4s ease;
+    transform-style: preserve-3d;
+    padding: 60px 40px;
+
+    @include bp(t) {
+      padding: 80px 100px;
+    }
+
+    &-front,
+    &-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      display: grid;
+      place-items: center;
+      backface-visibility: hidden;
+    }
+
+    &-back {
+      transform: rotateY(180deg);
+    }
+  }
+
+  &.shake {
+    animation: shake 0.4s forwards ease;
+  }
+}

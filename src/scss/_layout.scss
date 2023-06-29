@@ -1,23 +1,22 @@
 @use "./mixins" as *;
 
 .cards {
-  gap: 30px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  display: flex;
+  flex-wrap: wrap;
 
   @include bp(ts) {
-    grid-template-columns: 1fr 1fr 1fr;
   }
 
   @include bp(tl) {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
   }
 }
 
 main {
-  max-width: 1200px;
+  max-width: 960px;
   margin-inline: auto;
   padding-inline: 20px;
+  overflow: hidden;
 }
 
 h1 {

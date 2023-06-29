@@ -12,3 +12,9 @@ $breakpoints: (
     @content;
   }
 }
+
+@mixin transition($transitions...) {
+  transition-duration: 0.23s;
+  transition-property: $transitions;
+  transition-timing-function: ease-in-out;
+}

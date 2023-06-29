@@ -1,80 +1,92 @@
 <script>
-  import Card from "./components/Card.svelte";
-  import Matches from "./components/Matches.svelte";
-  import emojis from "./utils/Emojis";
-  import "./scss/main.scss";
+    import { onMount } from "svelte";
 
-  let matches = 0;
-  let totalMatches = 0;
-  let selectedEmojis = [];
-  let firstCard, secondCard;
+    import Card from "./components/Card.svelte";
+    import Matches from "./components/Matches.svelte";
+    import emojis from "./utils/Emojis";
+    import "./scss/main.scss";
 
-  const onCardClicked = (e) => {
-    const clickedCard = e.target.parentNode.parentNode;
+    let matches = 0;
+    let totalMatches = 0;
+    let selectedEmojis = [];
+    let firstCard, secondCard;
 
-    if (firstCard && secondCard) return;
+    onMount(() => {
+        getRandomEmojis();
+    })
 
-    if (!firstCard) {
-      if (firstCard === clickedCard) return;
-      if (clickedCard.classList.contains('active')) return;
+    function onCardClicked() {
+        const clickedCard = this;
 
-      firstCard = clickedCard
+        if (firstCard && secondCard) return;
 
-      clickedCard.classList.add('active')
-    } else {
-      if (clickedCard === firstCard) return;
-      if (clickedCard.classList.contains('active')) return;
+        if (!firstCard) {
+            if (firstCard === clickedCard) return;
+            if (clickedCard.classList.contains('active')) return;
 
-      secondCard = clickedCard
+            firstCard = clickedCard
 
-      clickedCard.classList.add('active')
+            clickedCard.classList.add('active')
+        } else {
+            if (clickedCard === firstCard) return;
+            if (clickedCard.classList.contains('active')) return;
 
-      // If cards have the same value
-      const firstCardFace = firstCard.querySelector('.card-inner-back').textContent;
-      const secondCardFace = secondCard.querySelector('.card-inner-back').textContent;
+            secondCard = clickedCard
 
-      if (firstCardFace === secondCardFace) {
-        matches++;
+            clickedCard.classList.add('active')
 
-        firstCard = undefined;
-        secondCard = undefined;
-      } else {
-        // if cards don't match
-        setTimeout(() => {
-          firstCard.classList.remove('active');
-          secondCard.classList.remove('active');
+            // If cards have the same value
+            const firstCardFace = firstCard.querySelector('.card-inner-back').textContent;
+            const secondCardFace = secondCard.querySelector('.card-inner-back').textContent;
 
-          firstCard.classList.add('shake');
-          secondCard.classList.add('shake');
-        }, 500)
-        setTimeout(() => {
-          firstCard.classList.remove('shake');
-          secondCard.classList.remove('shake');
+            if (firstCardFace === secondCardFace) {
+                matches++;
 
-          firstCard = undefined;
-          secondCard = undefined;
-        }, 1000)
-      }
+                setTimeout(() => {
+                    firstCard.classList.add('hidden')
+                    secondCard.classList.add('hidden')
+                }, 500)
+
+                setTimeout(() => {
+                    firstCard = undefined;
+                    secondCard = undefined;
+                }, 1000)
+            } else {
+                // if cards don't match
+                setTimeout(() => {
+                    firstCard.classList.remove('active');
+                    secondCard.classList.remove('active');
+
+                    firstCard.classList.add('shake');
+                    secondCard.classList.add('shake');
+                }, 500)
+                setTimeout(() => {
+                    firstCard.classList.remove('shake');
+                    secondCard.classList.remove('shake');
+
+                    firstCard = undefined;
+                    secondCard = undefined;
+                }, 1000)
+            }
+        }
     }
-  }
 
-  function getRandomEmojis() {
-    const shuffledEmojis = emojis.sort(() => Math.random() - 0.5);
-    selectedEmojis = shuffledEmojis.slice(0, 6).flatMap((emoji) => [emoji, emoji]);
+    const getRandomEmojis = () => {
+        const shuffledEmojis = emojis.sort(() => Math.random() - 0.5);
+        selectedEmojis = shuffledEmojis.slice(0, 6).flatMap((emoji) => [emoji, emoji]);
 
-    totalMatches = selectedEmojis.length / 2;
-    selectedEmojis = selectedEmojis.sort(() => Math.random() - 0.5);
-  }
+        totalMatches = selectedEmojis.length / 2;
+        selectedEmojis = selectedEmojis.sort(() => Math.random() - 0.5);
+    }
 
-  getRandomEmojis();
 </script>
 
 <main>
   <Matches {matches} {totalMatches} />
 
   <div class="cards">
-    {#each selectedEmojis as emoji}
-      <Card face={emoji.emoji} cardClick={onCardClicked}></Card>
+    {#each selectedEmojis as emoji, index}
+      <Card face={emoji.emoji} cardClick={onCardClicked} order={index}></Card>
     {/each}
   </div>
 </main>

@@ -4,16 +4,22 @@
   display: block;
   cursor: pointer;
   user-select: none;
-  border-radius: 20px;
-  font-size: 28px;
-  background-color: #323232;
+  font-size: 48px;
+  opacity: 0;
+  width: 150px;
+  height: 150px;
+  display: grid;
+  place-items: center;
+  background-color: #3b3b3b;
+  @include transition(opacity, background-color, box-shadow);
 
   @include bp(t) {
     font-size: 54px;
   }
 
   &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(163, 163, 163, 0.3);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
   }
 
   &.active {
@@ -23,14 +29,11 @@
   }
 
   &-inner {
+    width: 100%;
+    height: 100%;
     position: relative;
     transition: transform 0.4s ease;
     transform-style: preserve-3d;
-    padding: 60px 40px;
-
-    @include bp(t) {
-      padding: 80px 100px;
-    }
 
     &-front,
     &-back {
@@ -47,6 +50,15 @@
     &-back {
       transform: rotateY(180deg);
     }
+  }
+
+  &.hidden {
+    visibility: hidden;
+  }
+
+  &.loading {
+    animation: fadeIn 0.3s forwards ease;
+    animation-delay: calc(var(--order) * 100ms);
   }
 
   &.shake {

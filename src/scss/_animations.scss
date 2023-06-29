@@ -12,3 +12,16 @@
     transform: translateX(0);
   }
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(300px);
+    visibility: hidden; /* Add this line */
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible; /* Add this line */
+  }
+}

@@ -18,7 +18,7 @@
   on:animationend={handleAnimationEnd}
 >
   <div class="card-inner">
-    <div class="card-inner-front">❓</div>
+    <div class="card-inner-front">?</div>
     <div class="card-inner-back">{face}</div>
   </div>
 </div>

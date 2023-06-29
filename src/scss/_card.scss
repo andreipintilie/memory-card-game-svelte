@@ -6,20 +6,24 @@
   user-select: none;
   font-size: 48px;
   opacity: 0;
-  width: 150px;
-  height: 150px;
+  width: 75px;
+  height: 75px;
   display: grid;
   place-items: center;
-  background-color: #3a3a3a;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   @include transition(opacity, background-color, box-shadow);
 
   @include bp(t) {
+    width: 150px;
+    height: 150px;
     font-size: 54px;
   }
 
   &:hover {
     // background-color: rgba(163, 163, 163, 0.3);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
   }
 
   &.active {
@@ -44,6 +48,8 @@
       left: 0;
       display: grid;
       place-items: center;
+      color: #3e2f84;
+      font-weight: bold;
       backface-visibility: hidden;
     }
 

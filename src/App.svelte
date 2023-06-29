@@ -1,92 +1,27 @@
 <script>
-    import { onMount } from "svelte";
+    import Game from "./components/Game.svelte";
+    import SvelteLogo from "./assets/SvelteLogo.svelte";
 
-    import Card from "./components/Card.svelte";
-    import Matches from "./components/Matches.svelte";
-    import emojis from "./utils/Emojis";
-    import "./scss/main.scss";
-
-    let matches = 0;
-    let totalMatches = 0;
-    let selectedEmojis = [];
-    let firstCard, secondCard;
-
-    onMount(() => {
-        getRandomEmojis();
-    })
-
-    function onCardClicked() {
-        const clickedCard = this;
-
-        if (firstCard && secondCard) return;
-
-        if (!firstCard) {
-            if (firstCard === clickedCard) return;
-            if (clickedCard.classList.contains('active')) return;
-
-            firstCard = clickedCard
-
-            clickedCard.classList.add('active')
-        } else {
-            if (clickedCard === firstCard) return;
-            if (clickedCard.classList.contains('active')) return;
-
-            secondCard = clickedCard
-
-            clickedCard.classList.add('active')
-
-            // If cards have the same value
-            const firstCardFace = firstCard.querySelector('.card-inner-back').textContent;
-            const secondCardFace = secondCard.querySelector('.card-inner-back').textContent;
-
-            if (firstCardFace === secondCardFace) {
-                matches++;
-
-                setTimeout(() => {
-                    firstCard.classList.add('hidden')
-                    secondCard.classList.add('hidden')
-                }, 500)
-
-                setTimeout(() => {
-                    firstCard = undefined;
-                    secondCard = undefined;
-                }, 1000)
-            } else {
-                // if cards don't match
-                setTimeout(() => {
-                    firstCard.classList.remove('active');
-                    secondCard.classList.remove('active');
-
-                    firstCard.classList.add('shake');
-                    secondCard.classList.add('shake');
-                }, 500)
-                setTimeout(() => {
-                    firstCard.classList.remove('shake');
-                    secondCard.classList.remove('shake');
-
-                    firstCard = undefined;
-                    secondCard = undefined;
-                }, 1000)
-            }
-        }
+    let playing = false;
+    $: className = playing ? 'playing' : 'not-playing'
+    $: {
+    if (playing) {
+      document.body.classList.remove('no-scroll');
+    } else {
+      document.body.classList.add('no-scroll');
     }
-
-    const getRandomEmojis = () => {
-        const shuffledEmojis = emojis.sort(() => Math.random() - 0.5);
-        selectedEmojis = shuffledEmojis.slice(0, 6).flatMap((emoji) => [emoji, emoji]);
-
-        totalMatches = selectedEmojis.length / 2;
-        selectedEmojis = selectedEmojis.sort(() => Math.random() - 0.5);
-    }
-
+  }
+    const toggleGameStatus = () => {
+        playing = !playing
+    };
 </script>
 
-<main>
-  <Matches {matches} {totalMatches} />
-
-  <div class="cards">
-    {#each selectedEmojis as emoji, index}
-      <Card face={emoji.emoji} cardClick={onCardClicked} order={index}></Card>
-    {/each}
-  </div>
+<main class={className}>
+    {#if !playing}
+        <SvelteLogo />
+        <h1>Memory Card Game</h1>
+        <button class="play-button" on:click={toggleGameStatus}>Play</button>
+    {:else}
+        <Game on:gameOver={toggleGameStatus} />
+    {/if}
 </main>

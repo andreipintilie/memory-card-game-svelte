@@ -6,8 +6,10 @@
     import emojis from "../utils/Emojis";
     import "../scss/main.scss";
 
+    export let chosenMatches;
+
     let matches = 0;
-    let totalMatches = 0;
+    let totalTries = 0;
     let selectedEmojis = [];
     let firstCard, secondCard;
 
@@ -45,6 +47,7 @@
 
             if (firstCardFace === secondCardFace) {
                 matches++;
+                totalTries++;
 
                 setTimeout(() => {
                     firstCard.classList.add('hidden')
@@ -55,9 +58,9 @@
                     firstCard = undefined;
                     secondCard = undefined;
 
-                    if (matches === totalMatches) {
+                    if (matches === chosenMatches) {
                         matches = 0;
-                        totalMatches = 0;
+                        chosenMatches = 0;
 
                         onGameOver();
                     }
@@ -65,6 +68,8 @@
             } else {
                 // if cards don't match
                 setTimeout(() => {
+                    totalTries++;
+
                     firstCard.classList.remove('active');
                     secondCard.classList.remove('active');
 
@@ -84,16 +89,15 @@
 
     const getRandomEmojis = () => {
         const shuffledEmojis = emojis.sort(() => Math.random() - 0.5);
-        selectedEmojis = shuffledEmojis.slice(0, 6).flatMap((emoji) => [emoji, emoji]);
+        selectedEmojis = shuffledEmojis.slice(0, chosenMatches).flatMap((emoji) => [emoji, emoji]);
 
-        totalMatches = selectedEmojis.length / 2;
         selectedEmojis = selectedEmojis.sort(() => Math.random() - 0.5);
     }
 
 </script>
 
 
-<Matches {matches} {totalMatches} />
+<Matches {matches} totalMatches={chosenMatches} {totalTries} />
 
 <div class="cards">
 {#each selectedEmojis as emoji, index}

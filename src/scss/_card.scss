@@ -10,7 +10,7 @@
   height: 150px;
   display: grid;
   place-items: center;
-  background-color: #3b3b3b;
+  background-color: #3a3a3a;
   @include transition(opacity, background-color, box-shadow);
 
   @include bp(t) {
@@ -18,8 +18,8 @@
   }
 
   &:hover {
-    background-color: rgba(163, 163, 163, 0.3);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    // background-color: rgba(163, 163, 163, 0.3);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
   }
 
   &.active {
@@ -53,8 +53,12 @@
   }
 
   &.hidden {
-    visibility: hidden;
-    display: none;
+    background-color: #595959;
+    pointer-events: none;
+
+    &:hover {
+      // box-shadow: none;
+    }
   }
 
   &.loading {

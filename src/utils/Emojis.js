@@ -39,6 +39,30 @@ const emojis = [
     name: "Musical Notes",
     emoji: "🎶",
   },
+  {
+    name: "Smiling Face with Sunglasses",
+    emoji: "😎",
+  },
+  {
+    name: "Thumbs Up",
+    emoji: "👍",
+  },
+  {
+    name: "Fire",
+    emoji: "🔥",
+  },
+  {
+    name: "Rocket",
+    emoji: "🚀",
+  },
+  {
+    name: "Sparkles",
+    emoji: "✨",
+  },
+  {
+    name: "Crown",
+    emoji: "👑",
+  },
 ];
 
 export default emojis;

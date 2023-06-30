@@ -34,6 +34,7 @@
         <small>Maximum matches:</small>
         <div class="dropdown">
           <select on:change={handleSelectChange}>
+            <option value="2">2</option> <!-- for development -->
             <option value="6">6</option>
             <option value="9">9</option>
             <option value="13">13</option>

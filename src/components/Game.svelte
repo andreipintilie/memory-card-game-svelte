@@ -14,10 +14,19 @@
     let totalTries = 0;
     let selectedEmojis = [];
     let firstCard, secondCard;
+    let showGameStats = false;
+
+    let formattedTime = '';
+
+    $: {
+        const minutes = Math.floor(timer / 60).toString().padStart(2, '0');
+        const seconds = (timer % 60).toString().padStart(2, '0');
+        formattedTime = `${minutes}:${seconds}`;
+    }
 
     const dispatch = createEventDispatcher();
 
-    const onGameOver = () =>  dispatch('gameOver');
+    const onGameOver = () => showGameStats = true;
 
     onMount(() => {
         getRandomEmojis();
@@ -67,11 +76,10 @@
                     secondCard = undefined;
 
                     if (matches === chosenMatches) {
-                        matches = 0;
-                        chosenMatches = 0;
-
                         onGameOver();
                         clearInterval(myTimer);
+
+                        matches = 0;
                     }
                 }, 1000)
             } else {
@@ -103,13 +111,35 @@
         selectedEmojis = selectedEmojis.sort(() => Math.random() - 0.5);
     }
 
+    const closeGameOverCard = (e) => {
+        if (e.target !== e.currentTarget) return;
+        dispatch('gameOver')
+
+        showGameStats = false;
+    }
+
+    const handleEscapeButton = (e) => {
+        console.log(e.key);
+    }
+
 </script>
 
-
-<Matches {matches} totalMatches={chosenMatches} {totalTries} {timer} />
+<Matches {matches} totalMatches={chosenMatches} {totalTries} timer={formattedTime} />
 
 <div class="cards">
-{#each selectedEmojis as emoji, index}
-    <Card face={emoji.emoji} cardClick={onCardClicked} order={index}></Card>
-{/each}
+    {#each selectedEmojis as emoji, index}
+        <Card face={emoji.emoji} cardClick={onCardClicked} order={index}></Card>
+    {/each}
 </div>
+
+{#if showGameStats}
+    <div class="game-over-wrapper" on:click={closeGameOverCard} on:keydown={handleEscapeButton}>
+        <div class="game-over-card">
+            <h1 class="title">Game over</h1>
+            <p>Time: {formattedTime}</p>
+            <p>Number of attempts: {totalTries}</p>
+            <p>Difficulty: {chosenMatches} possible matches</p>
+            <button class="btn" on:click={closeGameOverCard}>Back to menu</button>
+        </div>
+    </div>
+{/if}

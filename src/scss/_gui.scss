@@ -132,12 +132,13 @@ main.not-playing {
 
       .wrapper {
         width: 100%;
-        display: flex;
+        display: grid;
+        column-gap: 10px;
         max-height: 160px;
-        flex-direction: column;
+        grid-template-columns: repeat(3, 1fr);
 
-        &::webkit-scrollbar {
-          background-color: red;
+        .pretitle {
+          font-weight: bold;
         }
       }
     }

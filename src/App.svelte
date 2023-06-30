@@ -1,4 +1,6 @@
 <script>
+    import { onMount } from "svelte";
+
     import Game from "./components/Game.svelte";
     import SvelteLogo from "./assets/SvelteLogo.svelte";
     import Modal from "./components/Modal.svelte";
@@ -20,8 +22,8 @@
         playing = !playing
     };
 
-    let possibleMatches = 6;
-    const options = [6, 9, 13, 16];
+    let possibleMatches = 2;
+    const options = [2, 9, 13, 16];
 
     const handleSelectChange = (e) => {
       possibleMatches = parseInt(e.target.value);
@@ -33,9 +35,17 @@
 
       setTimeout(() => {
             showScoreBoard = !showScoreBoard
-        }, 450);
+      }, 450);
     }
 
+    let scores = []
+    onMount(() => {
+      const storedData = localStorage.getItem('memorycardgame');
+
+      if (storedData) {
+        scores = JSON.parse(storedData);
+      }
+    })
 </script>
 
 <main class={`${className} ${classNameSecondary}`}>
@@ -58,8 +68,16 @@
         {#if showScoreBoard}
           <Modal class="score-board" onClickOutside={closeScoreBoard}>
             <h2 class="title">Top Score</h2>
-            <div class="grid">
+            <div class="wrapper overflow-y-auto">
+              {#each scores as score}
+                <div class="inline">
+                  <p>Difficulty: {score.difficulty}</p>
+                  <p>Attempts: {score.attempts}</p>
+                  <p>Time: {score.time}</p>
+                </div>
+              {/each}
             </div>
+            <button class="btn" on:click={() => localStorage.removeItem('memorycardgame')}>Clear Score List</button>
           </Modal>
         {/if}
 

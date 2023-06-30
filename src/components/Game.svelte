@@ -33,7 +33,23 @@
 
     const dispatch = createEventDispatcher();
 
-    const onGameOver = () => showGameStats = true;
+    const onGameOver = () => {
+        showGameStats = true;
+
+        let data = [{
+            difficulty: possibleMatches,
+            attempts: totalTries,
+            time: formattedTime,
+        }]
+
+        // Handling localStorage
+        if (localStorage.getItem('memorycardgame')) {
+            const currentData = JSON.parse(localStorage.getItem('memorycardgame'));
+            localStorage.setItem('memorycardgame', JSON.stringify([...currentData, ...data]))
+        } else {
+            localStorage.setItem('memorycardgame', JSON.stringify(data))
+        }
+    }
 
     onMount(() => {
         getRandomEmojis();

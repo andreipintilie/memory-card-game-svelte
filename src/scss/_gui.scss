@@ -130,9 +130,15 @@ main.not-playing {
       align-content: start;
       text-align: left;
 
-      .grid {
+      .wrapper {
+        width: 100%;
         display: flex;
+        max-height: 160px;
         flex-direction: column;
+
+        &::webkit-scrollbar {
+          background-color: red;
+        }
       }
     }
 

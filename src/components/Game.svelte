@@ -57,8 +57,6 @@
                 matches++;
                 totalTries++;
 
-                clearInterval(myTimer);
-
                 setTimeout(() => {
                     firstCard.classList.add('hidden')
                     secondCard.classList.add('hidden')
@@ -73,6 +71,7 @@
                         chosenMatches = 0;
 
                         onGameOver();
+                        clearInterval(myTimer);
                     }
                 }, 1000)
             } else {

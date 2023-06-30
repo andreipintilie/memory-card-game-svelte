@@ -8,6 +8,8 @@
 
     export let chosenMatches;
 
+    let myTimer;
+    let timer = 0;
     let matches = 0;
     let totalTries = 0;
     let selectedEmojis = [];
@@ -15,13 +17,19 @@
 
     const dispatch = createEventDispatcher();
 
-    const onGameOver = () => dispatch('gameOver');
+    const onGameOver = () =>  dispatch('gameOver');
 
     onMount(() => {
         getRandomEmojis();
     })
 
     function onCardClicked() {
+        if (!myTimer) {
+            myTimer = setInterval(() => {
+                timer += 1;
+            }, 1000)
+        }
+
         const clickedCard = this;
 
         if (firstCard && secondCard) return;
@@ -48,6 +56,8 @@
             if (firstCardFace === secondCardFace) {
                 matches++;
                 totalTries++;
+
+                clearInterval(myTimer);
 
                 setTimeout(() => {
                     firstCard.classList.add('hidden')
@@ -97,7 +107,7 @@
 </script>
 
 
-<Matches {matches} totalMatches={chosenMatches} {totalTries} />
+<Matches {matches} totalMatches={chosenMatches} {totalTries} {timer} />
 
 <div class="cards">
 {#each selectedEmojis as emoji, index}

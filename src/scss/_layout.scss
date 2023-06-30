@@ -34,7 +34,17 @@ main {
       small {
         font-weight: normal;
         font-size: 18px;
+        text-align: right;
       }
+    }
+
+    .timer {
+      color: white;
+      font-size: 18px;
+      text-align: right;
+      margin-top: 20px;
+      margin-bottom: -10px;
+      font-weight: bold;
     }
   }
 }

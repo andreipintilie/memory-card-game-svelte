@@ -21,6 +21,10 @@ main {
     max-width: 580px;
   }
 
+  @include bp(ds) {
+    max-width: 745px;
+  }
+
   &.playing {
     h1 {
       display: flex;
@@ -30,27 +34,6 @@ main {
       small {
         font-weight: normal;
         font-size: 18px;
-      }
-    }
-  }
-
-  &.not-playing {
-    height: 100svh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    animation: fadeIn 0.3s forwards;
-
-    svg {
-      width: 100px;
-      height: 100px;
-      @include transition(filter);
-      filter: drop-shadow(0 0 40px rgba(254, 60, 0, 0.3));
-
-      &:hover {
-        filter: drop-shadow(0 0 40px rgba(254, 60, 0, 0.7));
       }
     }
   }

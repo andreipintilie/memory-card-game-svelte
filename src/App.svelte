@@ -2,6 +2,9 @@
     import Game from "./components/Game.svelte";
     import SvelteLogo from "./assets/SvelteLogo.svelte";
 
+    import Fa from 'svelte-fa'
+    import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+
     let playing = false;
     $: className = playing ? 'playing' : 'not-playing'
     $: {
@@ -27,16 +30,18 @@
     {#if !playing}
         <SvelteLogo />
         <h1>Memory Card Game</h1>
-        <h2>Maximum matches:</h2>
-        
-        <select on:change={handleSelectChange}>
-          <option value="6">6</option>
-          <option value="9">9</option>
-          <option value="13">13</option>
-          <option value="16">16</option>
-        </select>
-
         <button class="play-button" on:click={toggleGameStatus}>Play</button>
+        <small>Maximum matches:</small>
+        <div class="dropdown">
+          <select on:change={handleSelectChange}>
+            <option value="6">6</option>
+            <option value="9">9</option>
+            <option value="13">13</option>
+            <option value="16">16</option>
+          </select>
+          <Fa icon={faChevronDown} />
+        </div>
+        <p class="createdWith">Created with Svelte.js</p>
     {:else}
         <Game on:gameOver={toggleGameStatus} {chosenMatches} />
     {/if}

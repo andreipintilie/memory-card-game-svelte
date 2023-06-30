@@ -9,8 +9,8 @@
 
 body {
   font-family: "Roboto", sans-serif;
-  // background-color: #232323;
-  background-color: #3e2f84;
+  // background-color: #3e2f84;
+  background: linear-gradient(270deg, #3e2f84, #684bc8);
 
   &.no-scroll {
     overflow-y: hidden;

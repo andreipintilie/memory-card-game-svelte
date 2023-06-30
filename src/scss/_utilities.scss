@@ -1,0 +1,9 @@
+@for $i from 1 through 10 {
+  .mb-#{$i} {
+    margin-bottom: #{$i * 5}px;
+  }
+}
+
+.max-w-100 {
+  max-width: 100%;
+}

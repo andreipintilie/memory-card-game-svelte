@@ -5,8 +5,9 @@
     import Matches from "./Matches.svelte";
     import emojis from "../utils/Emojis";
     import "../scss/main.scss";
+    import Modal from "./Modal.svelte";
 
-    export let chosenMatches;
+    export let possibleMatches;
 
     let myTimer;
     let timer = 0;
@@ -15,6 +16,12 @@
     let selectedEmojis = [];
     let firstCard, secondCard;
     let showGameStats = false;
+
+    $: {
+        if (showGameStats === false) {
+
+        }
+    }
 
     let formattedTime = '';
 
@@ -75,7 +82,7 @@
                     firstCard = undefined;
                     secondCard = undefined;
 
-                    if (matches === chosenMatches) {
+                    if (matches === possibleMatches) {
                         onGameOver();
                         clearInterval(myTimer);
 
@@ -106,25 +113,24 @@
 
     const getRandomEmojis = () => {
         const shuffledEmojis = emojis.sort(() => Math.random() - 0.5);
-        selectedEmojis = shuffledEmojis.slice(0, chosenMatches).flatMap((emoji) => [emoji, emoji]);
+        selectedEmojis = shuffledEmojis.slice(0, possibleMatches).flatMap((emoji) => [emoji, emoji]);
 
         selectedEmojis = selectedEmojis.sort(() => Math.random() - 0.5);
     }
 
     const closeGameOverCard = (e) => {
         if (e.target !== e.currentTarget) return;
-        dispatch('gameOver')
+        
+        if (e.target.querySelector('.card-element')) e.target.querySelector('.card-element').classList.add('fade-out')
+        else e.target.parentNode.classList.add('fade-out');
 
-        showGameStats = false;
+        setTimeout(() => {
+            dispatch('gameOver')
+        }, 450);
     }
-
-    const handleEscapeButton = (e) => {
-        console.log(e.key);
-    }
-
 </script>
 
-<Matches {matches} totalMatches={chosenMatches} {totalTries} timer={formattedTime} />
+<Matches {matches} totalMatches={possibleMatches} {totalTries} timer={formattedTime} />
 
 <div class="cards">
     {#each selectedEmojis as emoji, index}
@@ -133,13 +139,11 @@
 </div>
 
 {#if showGameStats}
-    <div class="game-over-wrapper" on:click={closeGameOverCard} on:keydown={handleEscapeButton}>
-        <div class="game-over-card">
-            <h1 class="title">Game over</h1>
-            <p>Time: {formattedTime}</p>
-            <p>Number of attempts: {totalTries}</p>
-            <p>Difficulty: {chosenMatches} possible matches</p>
-            <button class="btn" on:click={closeGameOverCard}>Back to menu</button>
-        </div>
-    </div>
+    <Modal onClickOutside={closeGameOverCard}>
+        <h1 class="title">Game over</h1>
+        <p>Time: {formattedTime}</p>
+        <p>Number of attempts: {totalTries}</p>
+        <p>Difficulty: {possibleMatches} possible matches</p>
+        <button class="btn" on:click={closeGameOverCard}>Back to menu</button>
+    </Modal>
 {/if}

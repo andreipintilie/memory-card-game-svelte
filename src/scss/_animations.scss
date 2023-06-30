@@ -17,11 +17,20 @@
   from {
     opacity: 0;
     transform: translateY(100px);
-    visibility: hidden; /* Add this line */
   }
   to {
     opacity: 1;
     transform: translateY(0);
-    visibility: visible; /* Add this line */
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100px);
   }
 }

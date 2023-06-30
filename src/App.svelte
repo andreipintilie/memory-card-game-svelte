@@ -1,49 +1,69 @@
 <script>
     import Game from "./components/Game.svelte";
     import SvelteLogo from "./assets/SvelteLogo.svelte";
+    import Modal from "./components/Modal.svelte";
 
     import Fa from 'svelte-fa'
     import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
 
     let playing = false;
+    let showScoreBoard = false;
+
     $: className = playing ? 'playing' : 'not-playing'
+    $: classNameSecondary = showScoreBoard ? 'max-w-100' : '';
+
     $: {
-      if (playing) {
-        document.body.classList.remove('no-scroll');
-      } else {
-        document.body.classList.add('no-scroll');
-      }
+      if (playing) document.body.classList.remove('no-scroll');
+      else document.body.classList.add('no-scroll');
     }
     const toggleGameStatus = () => {
         playing = !playing
     };
 
-    let chosenMatches = 6;
+    let possibleMatches = 6;
+    const options = [6, 9, 13, 16];
 
     const handleSelectChange = (e) => {
-      chosenMatches = parseInt(e.target.value);
+      possibleMatches = parseInt(e.target.value);
+    }
+
+    const closeScoreBoard = (e) => {
+      if (e.target !== e.currentTarget) return;
+      if (e.target.querySelector('.card-element')) e.target.querySelector('.card-element').classList.add('fade-out')
+
+      setTimeout(() => {
+            showScoreBoard = !showScoreBoard
+        }, 450);
     }
 
 </script>
 
-<main class={className}>
+<main class={`${className} ${classNameSecondary}`}>
     {#if !playing}
         <SvelteLogo />
         <h1>Memory Card Game</h1>
-        <button class="play-button" on:click={toggleGameStatus}>Play</button>
+        <button class="menu-button mb-4" on:click={toggleGameStatus}>Play</button>
+        <button class="menu-button" on:click={() => showScoreBoard = !showScoreBoard}>Score</button>
         <small>Maximum matches:</small>
         <div class="dropdown">
           <select on:change={handleSelectChange}>
-            <option value="2">2</option> <!-- for development -->
-            <option value="6">6</option>
-            <option value="9">9</option>
-            <option value="13">13</option>
-            <option value="16">16</option>
+            {#each options as option}
+              <option value={option} selected={option === possibleMatches}>{option}</option>
+            {/each}
           </select>
           <Fa icon={faChevronDown} />
         </div>
         <p class="createdWith">Created with Svelte.js</p>
+
+        {#if showScoreBoard}
+          <Modal class="score-board" onClickOutside={closeScoreBoard}>
+            <h2 class="title">Top Score</h2>
+            <div class="grid">
+            </div>
+          </Modal>
+        {/if}
+
     {:else}
-        <Game on:gameOver={toggleGameStatus} {chosenMatches} />
+        <Game on:gameOver={toggleGameStatus} {possibleMatches} />
     {/if}
 </main>

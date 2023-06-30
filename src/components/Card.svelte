@@ -16,6 +16,7 @@
   tabindex="0"
   style={`--order: ${order}`}
   on:animationend={handleAnimationEnd}
+  on:keydown={() => {}}
 >
   <div class="card-inner">
     <div class="card-inner-front">?</div>

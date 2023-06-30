@@ -10,5 +10,5 @@
 <p class="timer">{timer}</p>
 <h1>
     Matches: {matches}/{totalMatches} 
-    <small>Tries: {totalTries}</small>
+    <small>Attempts: {totalTries}</small>
 </h1>

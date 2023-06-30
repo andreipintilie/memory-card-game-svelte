@@ -55,6 +55,11 @@
 
     &-back {
       transform: rotateY(180deg);
+      font-size: 32px;
+
+      @include bp(t) {
+        font-size: 54px;
+      }
     }
   }
 

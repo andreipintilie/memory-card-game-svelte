@@ -18,12 +18,6 @@
     let firstCard, secondCard;
     let showGameStats = false;
 
-    $: {
-        if (showGameStats === false) {
-
-        }
-    }
-
     let formattedTime = '';
 
     $: {

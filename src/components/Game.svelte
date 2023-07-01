@@ -13,6 +13,7 @@
     let timer = 0;
     let matches = 0;
     let totalTries = 0;
+    let playing = false;
     let selectedEmojis = [];
     let firstCard, secondCard;
     let showGameStats = false;
@@ -29,6 +30,12 @@
         const minutes = Math.floor(timer / 60).toString().padStart(2, '0');
         const seconds = (timer % 60).toString().padStart(2, '0');
         formattedTime = `${minutes}:${seconds}`;
+    }
+
+    const onGameStart = () => {
+        setTimeout(() => {
+            if (playing === false) playing = true
+        }, 300);
     }
 
     const dispatch = createEventDispatcher();
@@ -56,6 +63,8 @@
     })
 
     function onCardClicked() {
+        if (!playing) return;
+
         if (!myTimer) {
             myTimer = setInterval(() => {
                 timer += 1;
@@ -101,8 +110,6 @@
                     if (matches === possibleMatches) {
                         onGameOver();
                         clearInterval(myTimer);
-
-                        matches = 0;
                     }
                 }, 1000)
             } else {
@@ -150,7 +157,7 @@
 
 <div class="cards">
     {#each selectedEmojis as emoji, index}
-        <Card face={emoji.emoji} cardClick={onCardClicked} order={index}></Card>
+        <Card face={emoji.emoji} cardClick={onCardClicked} order={index} on:onGameStart={onGameStart}></Card>
     {/each}
 </div>
 

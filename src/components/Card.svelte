@@ -1,7 +1,11 @@
 <script>
   import { createEventDispatcher } from "svelte";
 
-  let animationEnd = false;
+  let isLoading = true;
+  $: loadingClass = isLoading ? 'loading' : '';
+
+  let isRotating = false;
+  $: rotatingClas = isRotating ? 'rotate' : '';
 
   export let face;
   export let order;
@@ -10,26 +14,25 @@
   let dispatch = createEventDispatcher();
 
   function handleAnimationEnd() {
-    this.classList.remove('loading');
     this.style.opacity='1'
 
-    if (animationEnd) return;
+    if (!isLoading) return;
 
     setTimeout(() => {
-      this.classList.add('rotate');
+      isRotating = true;
     }, 500)
     setTimeout(() => {
-      this.classList.remove('rotate');
+      isRotating = false;
     }, 2000)
     setTimeout(() => {
-      animationEnd = true;
+      isLoading = false;
       dispatch('onGameStart');
     }, 2500)
   }
 </script>
 
 <div
-  class="card loading"
+  class={`card ${loadingClass} ${rotatingClas}`}
   on:click={cardClick}
   role="button"
   tabindex="0"
